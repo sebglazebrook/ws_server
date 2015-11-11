@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y libssl-dev
 # doesn't exist for the root user. Here's a workaround
 RUN echo '"$@"' > /usr/bin/sudo && chmod +x /usr/bin/sudo
 
-RUN curl -sSf https://static.rust-lang.org/rustup.sh | bash -s -- -y --channel=nightly
+RUN curl -sSf https://static.rust-lang.org/rustup.sh | bash -s -- -y --channel=beta
 # RUN curl -sSf https://static.rust-lang.org/rustup.sh | bash -s -- -y
 
 RUN apt-get update && apt-get install --yes git
