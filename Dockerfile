@@ -14,6 +14,6 @@ WORKDIR /code
 
 RUN mkdir /root/.cargo
 
-COPY ["*", "/code"]
+COPY ["/", "/code"]
 
 RUN ["cargo", build]
