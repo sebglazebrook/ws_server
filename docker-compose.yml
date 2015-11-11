@@ -10,5 +10,5 @@ websocketserver:
   ports:
     - "2794:2794"
   volumes:
-    - .:/code
+    - ${PWD}/simple_server:/code
   command: cargo run --verbose
