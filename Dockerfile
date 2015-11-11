@@ -16,4 +16,4 @@ RUN mkdir /root/.cargo
 
 COPY ["/", "/code"]
 
-RUN ["cargo", build]
+RUN ["cargo", "build"]
