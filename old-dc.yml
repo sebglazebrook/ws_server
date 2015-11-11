@@ -1,0 +1,69 @@
+data:
+  image: ubuntu
+  command: /bin/true
+  volumes:
+    - /etc/nginx/conf.d/
+    - /etc/nginx/sites-available/
+    - /var/www/db/
+    - /var/www/live_chat/log/
+    - /var/www/live_chat/public/system/
+    - /var/log/nginx/
+    - /var/lib/postgresql
+database:
+  image: postgres
+  environment:
+    POSTGRES_PASSWORD: LivIdaLinneaGlazebrook
+redis:
+  image: redis
+  restart: always
+webserver:
+  image: nginx
+  volumes_from:
+    - data
+  links:
+    - redis
+    - appserver
+    - websocketserver
+  ports:
+    - "80:80"
+    - "443:443"
+appserver:
+#  build: .
+  image: sebglazebrook/live-chat-mvp
+  volumes:
+    - /var/www/live_chat:/var/www/live_chat
+  ports:
+    - "3000:3000"
+  volumes_from:
+    - data
+  links:
+    - redis
+    - database
+  command: bundle exec unicorn -c config/unicorn.rb -p 3000
+  env_file: .env
+websocketserver:
+#  build: .
+  image: sebglazebrook/live-chat-mvp
+  volumes:
+    - /var/www/live_chat:/var/www/live_chat
+  ports:
+    - "3001:3001"
+  volumes_from:
+    - data
+  command: bundle exec rake websocket_rails:start_server
+  links:
+    - database
+    - redis
+  env_file: .env
+queue:
+#  build: .
+  image: sebglazebrook/live-chat-mvp
+  volumes_from:
+    - data
+  volumes:
+    - /var/www/live_chat:/var/www/live_chat
+  command: bundle exec sidekiq -L log/sidekiq.log
+  links:
+    - database
+    - redis
+  env_file: .env

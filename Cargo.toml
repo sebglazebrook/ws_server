@@ -1,0 +1,9 @@
+[package]
+name = "simple_server"
+version = "0.1.0"
+authors = ["Seb Glazebrook <sebastian.glazebrook@redbubble.com>"]
+
+[dependencies]
+websocket = "~0.13.1"
+crossbeam = "~0.1.5"
+ws = "~0.3.0" 
