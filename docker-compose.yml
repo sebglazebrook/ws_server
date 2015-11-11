@@ -6,9 +6,9 @@ webserver:
   links:
     - websocketserver
 websocketserver:
-  build: docker/websocketserver
+  build: .
   ports:
     - "2794:2794"
   volumes:
-    - ${PWD}/simple_server:/code
+    - .:/code
   command: cargo run --verbose
